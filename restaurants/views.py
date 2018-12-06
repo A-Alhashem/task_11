@@ -80,10 +80,10 @@ def restaurant_create(request):
     return render(request, 'create.html', context)
 
 def item_create(request, restaurant_id):
-    if not restaurant.owner == request.user or request.user.is_staff:
-        return redirect('no-access')
     form = ItemForm()
     restaurant = Restaurant.objects.get(id=restaurant_id)
+    if not (restaurant.owner == request.user or request.user.is_staff):
+        return redirect('no-access')
     if request.method == "POST":
         form = ItemForm(request.POST)
         if form.is_valid():
